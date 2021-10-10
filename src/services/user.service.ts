@@ -10,22 +10,35 @@ export default class UserService{
     }
 
     async create(user: User): Promise<void>{
-        await this.userModel.create(user, (err, data) => {
-            if (err) console.log("UserService -> create: ", err)
-        })
+        try{
+            await this.userModel.create(user)
+        }
+        catch(e){
+            console.log("UserService -> create: ", e)
+        }
     }
 
-    async getList(): Promise<User[]>{
+    async getAll(): Promise<User[]>{
         let users : User[] = await this.userModel.find();
         return users
     }
 
     async delete(id: string): Promise<void>{
-        await this.userModel.deleteOne({id})
+        try{
+            await this.userModel.deleteOne({id})
+        }
+        catch(e){
+            console.log("UserService -> delete: ", e)
+        }
     }
 
     async update(user: User): Promise<void>{
-        await this.userModel.updateOne({id: user.id}, user)
+        try{
+            await this.userModel.updateOne({id: user.id}, user)
+        }
+        catch(e){
+            console.log("UserService -> update: ", e)
+        }
     }
 
     async isExists(objQuery: object): Promise<boolean>{

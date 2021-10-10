@@ -6,6 +6,7 @@ export class Admin {
     public id: string;
     public username: string;
     public password: string;
+    public email: string;
     public access_token: string;
 
     constructor();
@@ -14,6 +15,7 @@ export class Admin {
         this.id = obj?.id || "";
         this.username = obj?.username || "";
         this.password = obj?.password || "";
+        this.email = obj?.email || "";
         this.access_token = obj?.access_token || "";
 
     }
@@ -22,8 +24,9 @@ export class Admin {
 
 const adminSchema = new Schema({
     id: { type: String, required: true },
-    username: String,
-    password: String,
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    email: { type: String, required: true },
     access_token: String,
 })
 

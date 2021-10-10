@@ -8,7 +8,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
-import BaseRouter from './routes';
+import BaseRouterV1 from './routes/v1';
 import logger from '@shared/Logger';
 
 import {connectDB} from '@config/db.config'
@@ -51,7 +51,7 @@ declare module "express" {
 
 
 // Add APIs
-app.use('/', BaseRouter);
+app.use('/api/v1', BaseRouterV1);
 
 // Print API errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

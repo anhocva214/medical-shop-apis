@@ -1,4 +1,4 @@
-import StatusCodes, {  } from 'http-status-codes';
+import StatusCodes from 'http-status-codes';
 import { Request, Response } from 'express';
 const { FORBIDDEN, CREATED, OK, BAD_GATEWAY , BAD_REQUEST} = StatusCodes;
 import {User} from '@models/user.model';
@@ -6,6 +6,7 @@ import {HashMD5} from '@shared/functions'
 import {v1 as uuidv1} from 'uuid'
 import {JwtService} from '@services/jwt.service'
 import UserService from '@services/user.service'
+import { formValidate } from '@shared/validate';
 
 
 export default class UserController {
@@ -23,20 +24,18 @@ export default class UserController {
     async register(req: Request, res: Response){
         let user = new User(req.body)
 
+        // console.log(formValidate(user))
 
-        if (!user.password || !user.email || !user.username)
-            return res.status(BAD_REQUEST).send({message: "Not enough information"})
+        // if (!user.password || !user.email)
+        //     return res.status(BAD_REQUEST).send({message: "Not enough information"})
 
-        if (await this.userServive.isExists({username: user.username}) == true)
-            return res.status(BAD_REQUEST).send({message: "Username is exists", error_form: "Tền tài khoản đã tồn tại"})
-        
-        if (await this.userServive.isExists({email: user.email}) == true)
-            return res.status(BAD_REQUEST).send({message: "Email is exists", error_form: "Email đã tồn tại"})
+        // if (await this.userServive.isExists({email: user.email}) == true)
+        //     return res.status(BAD_REQUEST).send({message: "Email is exists", error_form: "Email đã tồn tại"})
 
-        this.user = user;
-        this.user.id = uuidv1()
-        this.user.password = HashMD5(req.body.password)
-        this.userServive.create(this.user)
+        // this.user = user;
+        // this.user.id = uuidv1()
+        // this.user.password = HashMD5(req.body.password)
+        // this.userServive.create(this.user)
         
         return res.status(OK).send({message: "Register successfully"})
     }
@@ -78,7 +77,6 @@ export default class UserController {
     // update info
     async update(req: Request, res: Response){
         this.user = new User(req.body);
-        this.user.username = req.user.username;
         this.user.id = req.user.id;
         
         if (!this.user.email)
