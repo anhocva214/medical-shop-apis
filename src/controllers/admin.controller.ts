@@ -21,33 +21,34 @@ export default class AdminController {
 
     // create new admin
     async create(req: Request, res: Response){
-        this.admin = new Admin(req.body);
-        if (!this.admin.username || !this.admin.password || !req.body.code)
+        let admin = new Admin(req.body);
+        // console.log(admin)
+        if (!admin.username || !admin.password || !req.body.code)
             return res.status(BAD_REQUEST).send({message: "Info invalid"})
         if (req.body.code != "122112")
             return res.status(UNAUTHORIZED).send({message: "Code is wrong"})
 
-        this.admin.id = uuidv1();
-        this.admin.password = HashMD5(this.admin.password)
-        this.adminService.create(this.admin)
+        if (await this.adminService.isExists({username: admin.username}))
+            return res.status(BAD_REQUEST).send({message: "Username is exists"})
+
+        admin.id = uuidv1();
+        admin.password = HashMD5(admin.password)
+        this.adminService.create(admin)
 
         return res.status(OK).send({message: "Create admin successfully"})
     }
 
     // login
     async login(req: Request, res: Response){
-        this.admin = new Admin(req.body)
-        let admin = await this.adminService.findOne({
-            username: this.admin.username, 
-            password: HashMD5(this.admin.password)
-        })
+        let admin = new Admin(req.body)
 
-        if (!admin) return res.status(BAD_REQUEST).send({message: "Login fail"})
+        if (!await this.adminService.isExists({username: admin.username, password: HashMD5(admin.password)})) 
+            return res.status(UNAUTHORIZED).send({message: "Login fail"})
 
-        this.admin = admin;
-        this.admin.access_token = await this.jwtService.generateJwt(this.admin);
-        this.adminService.update(this.admin);
-        return res.status(OK).send({message: "login successfully", data: this.admin})
+        admin = await this.adminService.findOne({username: admin.username});
+        admin.access_token = await this.jwtService.generateJwt(admin);
+        this.adminService.update(admin);
+        return res.status(OK).send({message: "Login successfully", data: admin})
     }
 
     // authenticate

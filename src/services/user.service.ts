@@ -41,6 +41,7 @@ export default class UserService{
         }
     }
 
+    
     async isExists(objQuery: object): Promise<boolean>{
         let query : User[] = await this.userModel.findOne(objQuery);
         if (!!query) return true

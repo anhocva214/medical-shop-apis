@@ -6,7 +6,7 @@ import {HashMD5} from '@shared/functions'
 import {v1 as uuidv1} from 'uuid'
 import {JwtService} from '@services/jwt.service'
 import UserService from '@services/user.service'
-import { formValidate } from '@shared/validate';
+import { ValidateService } from '@services/validate.service';
 
 
 export default class UserController {
@@ -24,18 +24,22 @@ export default class UserController {
     async register(req: Request, res: Response){
         let user = new User(req.body)
 
-        // console.log(formValidate(user))
+        let userValidate= new ValidateService(user)
+        let errorsRegister = userValidate.formRegister()
+        // console.log(Object.keys(errorsRegister))
+        if (Object.keys(errorsRegister).length > 0)
+            return res.status(BAD_REQUEST).send({message: "Regsiter failed", errors: errorsRegister})
 
-        // if (!user.password || !user.email)
-        //     return res.status(BAD_REQUEST).send({message: "Not enough information"})
+        if (await this.userServive.isExists({email: user.email})){
+            return res.status(BAD_REQUEST).send({message: "Register failed", errors: [{email: 'Email is exists'}]})
+        }
 
-        // if (await this.userServive.isExists({email: user.email}) == true)
-        //     return res.status(BAD_REQUEST).send({message: "Email is exists", error_form: "Email đã tồn tại"})
+        user.id = uuidv1()
+        user.password = HashMD5(user.password)
+        // console.log(user)
 
-        // this.user = user;
-        // this.user.id = uuidv1()
-        // this.user.password = HashMD5(req.body.password)
-        // this.userServive.create(this.user)
+        await this.userServive.create(user)
+
         
         return res.status(OK).send({message: "Register successfully"})
     }

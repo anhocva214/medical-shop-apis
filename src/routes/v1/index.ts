@@ -15,19 +15,20 @@ userRouter.get('/authenticate', userMiddleware, userController.authenticate.bind
 userRouter.post('/update', userMiddleware, userController.update.bind(userController));
 
 
-// Admin-route
-const adminRouter = Router();
+// AdminAccount-route
 const adminController = new AdminController();
-adminRouter.post('/create', adminController.create.bind(adminController));
-adminRouter.post('/login', adminController.login.bind(adminController));
-adminRouter.get('/authenticate', adminMiddleware, adminController.authenticate.bind(adminController));
+
+const adminAccountRouter = Router();
+adminAccountRouter.post('/create', adminController.create.bind(adminController));
+adminAccountRouter.post('/login', adminController.login.bind(adminController));
+adminAccountRouter.get('/authenticate', adminMiddleware, adminController.authenticate.bind(adminController));
 
 
 
 // Export the base-router
 const baseRouter = Router();
 baseRouter.use('/user', userRouter);
-baseRouter.use('/admin', adminRouter);
+baseRouter.use('/admin/account', adminAccountRouter);
 
 
 
