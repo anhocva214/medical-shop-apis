@@ -48,12 +48,18 @@ export default class AdminController {
         admin = await this.adminService.findOne({username: admin.username});
         admin.access_token = await this.jwtService.generateJwt(admin);
         this.adminService.update(admin);
-        return res.status(OK).send({message: "Login successfully", data: admin})
+        return res.status(OK).send({message: "Login successfully", data: admin, token: {
+            access_token: admin.access_token,
+            expiresIn: 7*60*60*24
+        }})
     }
 
     // authenticate
     async authenticate(req: Request, res: Response){
         this.admin = new Admin(req.user);
-        return res.status(OK).send({ data: this.admin})
+        return res.status(OK).send({ data: this.admin, token: {
+            access_token: this.admin.access_token,
+            expiresIn: 7*60*60*24
+        }})
     }
 }

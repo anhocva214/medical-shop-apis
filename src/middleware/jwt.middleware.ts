@@ -9,6 +9,7 @@ import AdminService from '@services/admin.service'
 
 export async function userMiddleware(req: Request, res: Response, next: NextFunction) {
     let authorization : string = req.headers.authorization as string;
+    if (!authorization) return res.status(UNAUTHORIZED).send({message: "Access token is required"});
     let accessToken = authorization.split(" ")[1].trim();
     // console.log("access_token: ", accessToken)
     const jwtService = new JwtService();
@@ -30,6 +31,8 @@ export async function userMiddleware(req: Request, res: Response, next: NextFunc
 
 export async function adminMiddleware(req: Request, res: Response, next: NextFunction) {
     let authorization : string = req.headers.authorization as string;
+    if (!authorization) return res.status(UNAUTHORIZED).send({message: "Access token is required"});
+
     let accessToken = authorization.split(" ")[1].trim();
     // console.log("access_token: ", accessToken)
     const jwtService = new JwtService();

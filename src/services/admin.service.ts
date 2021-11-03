@@ -1,7 +1,7 @@
 import {Admin, AdminModel} from '@models/admin.model';
 
 
-export default class UserService{
+export default class AdminService{
 
     private model: typeof AdminModel;
 

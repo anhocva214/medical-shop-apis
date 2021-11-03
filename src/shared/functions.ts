@@ -47,4 +47,6 @@ export const convertToSlug = (str: string) => {
     return str;
 }
 
-
+export const mapObjectMongo = (data: any[], object: any) => {
+    return data.map( (item: any) => new object(item._doc))
+}

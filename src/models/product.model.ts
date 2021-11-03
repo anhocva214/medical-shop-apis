@@ -7,19 +7,20 @@ export class Product {
     public name: string;
     public description: string;
     public price: {
-        origin: number | null,
-        saleOff: number | null,
+        cost: number ,
+        price: number ,
         unit: string
     };
     public categories: string[];
     public thumbnail: string[];
     public review: string[];
     public ratting: number;
-    public createdAt: number | null;
+    public createdAt: number ;
+    public timePublish: number ;
 
 
     constructor();
-    constructor(user: Product);
+    constructor(obj: Product);
     constructor(obj?: any) {
         this.id = obj?.id || "";
         this.name = obj?.name || "";
@@ -30,6 +31,7 @@ export class Product {
         this.review = obj?.reviewId || [];
         this.ratting = obj?.ratting || [];
         this.createdAt = obj?.createdAt || null;
+        this.timePublish = obj?.timePublish || null;
 
     }
 }
