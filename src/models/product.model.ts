@@ -42,8 +42,8 @@ const productSchema = new Schema({
     name: { type: String, required: true},
     description: String,
     price: {
-        origin: Number,
-        saleOff: Number,
+        cost: Number,
+        price: Number,
         unit: String
     },
     categories: [String],

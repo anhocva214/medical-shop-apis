@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UserController from '@controllers/user.controller';
-import {adminMiddleware, userMiddleware} from '@middleware/jwt.middleware';
+import { adminMiddleware, userMiddleware } from '@middleware/jwt.middleware';
 import AdminController from '@controllers/admin.controller';
 import ProductController from '@controllers/product.controller';
 import CategoryController from '@controllers/category.controller';
@@ -33,8 +33,8 @@ adminAccountRouter.get('/authenticate', adminMiddleware, adminController.authent
 // Product Route
 const productRouter = Router();
 productRouter.get('/list', productController.getAll.bind(productController));
-productRouter.post('/create',adminMiddleware, productController.create.bind(productController));
-productRouter.post('/update/info', productController.updateInfo.bind(productController));
+productRouter.post('/create', adminMiddleware, productController.create.bind(productController));
+productRouter.post('/update', adminMiddleware, productController.updateInfo.bind(productController));
 productRouter.post("/delete", adminMiddleware, productController.delete.bind(productController));
 
 
