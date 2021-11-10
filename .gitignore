@@ -127,4 +127,6 @@ dist
 .webpack/
 
 # End of https://www.toptal.com/developers/gitignore/api/node
-1
+yarn.lock
+yarn-error.log
+jet-logger.log
